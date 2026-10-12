@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParkEase Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="adm">
+
+<div id="gate" class="gate">
+  <div class="card" style="max-width:420px;width:100%">
+    <div class="logo" style="color:var(--ink);margin-bottom:14px"><i class="mark">P</i>ParkEase Admin</div>
+    <h2 style="font-size:1.4rem">Admin login</h2><p class="sub">Enter the admin passcode.</p>
+    <div class="row"><input id="pass" type="password" placeholder="Passcode" style="flex:1" onkeydown="if(event.key==='Enter')adminLogin()"><button class="btn" onclick="adminLogin()">Enter</button></div>
+    <p class="sub" style="margin:6px 0 0;font-size:.88rem"><a href="../index.html" style="color:inherit">← Back to the website</a></p>
+  </div>
+</div>
+
+<div id="shell" class="shell" style="display:none">
+  <aside class="side">
+    <div class="logo"><i class="mark">P</i>ParkEase <span class="mode" id="mode"></span></div>
+    <div class="sidelabel">Admin dashboard</div>
+    <nav id="tabs">
+      <button data-t="overview" class="on">📊 Overview</button>
+      <button data-t="reservations">🎟️ Reservations</button>
+      <button data-t="slots">🅿️ Parking Slots</button>
+      <button data-t="wait">⏳ Waiting List <span class="badge" id="bWait"></span></button>
+      <button data-t="users">👥 Users</button>
+    </nav>
+    <div class="sidefoot"><a href="../index.html">← Back to website</a><button class="hb" onclick="adminLogout()">Log out</button></div>
+  </aside>
+
+  <div class="content">
+
+    <section id="t-overview" class="on">
+      <h2>Overview</h2><p class="sub">Live status of the lot and today's money.</p>
+      <div class="stats" id="astats"></div>
+
+      <div class="card"><h3 style="margin-top:0">Check a ticket code</h3>
+        <p class="sub" style="margin-bottom:12px">Type the code on a driver's ticket to see the slot, time and payment. Slots turn Occupied automatically when the driver pays.</p>
+        <div class="row" style="margin-bottom:0"><input id="vCode" placeholder="e.g. PE-7K3Q9X" style="flex:1;min-width:180px;text-transform:uppercase" onkeydown="if(event.key==='Enter')verifyCode()"><button class="btn" onclick="verifyCode()">Check code</button></div>
+        <div id="vOut"></div></div>
+
+      <div class="card"><h3 style="margin-top:0">Currently parked</h3>
+        <p class="sub" style="margin-bottom:8px">Paid tickets with an Occupied slot. Check out a driver when they leave.</p><div id="aPending"></div></div>
+    </section>
+
+    <section id="t-reservations">
+      <h2>Reservations</h2><p class="sub">Every ticket: check out, cancel and refund, or mark a refund as paid.</p>
+      <div class="card">
+        <div class="row"><input id="rq" placeholder="Search code, slot or name…" oninput="renderRes()" style="flex:1;min-width:180px">
+        <select id="rFilter" onchange="renderRes()"><option value="">All statuses</option><option>Occupied</option><option>Completed</option><option>Cancelled</option></select></div>
+        <div class="tbl"><table><thead><tr><th>Code</th><th>Slot</th><th>Customer</th><th>Hours</th><th>Fee</th><th>Payment</th><th>Status</th><th>Booked</th><th>Actions</th></tr></thead><tbody id="rBody"></tbody></table></div>
+      </div>
+    </section>
+
+    <section id="t-slots">
+      <h2>Parking Slots</h2><p class="sub">Add slots, set the hourly rate, rename or delete them.</p>
+      <div class="card"><h3 style="margin-top:0">➕ Add parking slot</h3>
+        <div class="row"><select id="secSel" onchange="pickSection()"></select>
+        <input id="secNew" placeholder="New section (e.g. VIP)" oninput="suggest()">
+        <input id="numIn" placeholder="Number or name (e.g. 6)" style="width:170px">
+        <input id="rateIn" type="number" min="0" step="1" placeholder="₱ per hour" style="width:120px" aria-label="Rate per hour in pesos">
+        <button class="btn g" onclick="addSlot()">Add slot</button></div>
+        <small class="sub">Pick an existing section to auto-fill the next number, or type a new section. Result looks like A6, VIP1, or Visitor.</small></div>
+      <div class="card"><h3 style="margin-top:0">All slots</h3>
+        <div class="row"><input id="q" placeholder="Search slot label…" oninput="renderSlots()" style="flex:1;min-width:160px">
+        <select id="sortBy" onchange="renderSlots()"><option value="label">Sort: Label</option><option value="status">Sort: Status</option></select></div>
+        <div class="tbl"><table><thead><tr><th>Slot</th><th>Rate / hour</th><th>Status</th><th>Held by</th><th>Ticket</th><th>Actions</th></tr></thead><tbody id="sBody"></tbody></table></div></div>
+    </section>
+
+    <section id="t-wait">
+      <h2>Waiting List</h2><p class="sub">The first people in line get to reserve the next free slots.</p>
+      <div class="card" id="aWait"></div>
+    </section>
+
+    <section id="t-users">
+      <h2>Registered users</h2><p class="sub">Everyone who has created an account.</p>
+      <div class="card" id="aUsers"></div>
+    </section>
+
+  </div>
+</div>
+
+<dialog id="slotDlg"><div class="dlg"><h3 style="margin-top:0">Edit slot</h3><div id="sdBody"></div></div></dialog>
+<div id="toast"></div>
+
+<script src="../common.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

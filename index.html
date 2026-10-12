@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ParkEase – Parking Slot Reservation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="bar">
+  <div class="logo"><i class="mark">P</i>ParkEase <span class="mode" id="mode"></span></div>
+  <nav id="nav">
+    <button data-p="home" class="on">Home</button><button data-p="slots">Parking Slots</button>
+    <button data-p="mine">My Account</button><button data-p="wait">Waiting List</button>
+  </nav>
+  <div id="who"></div>
+</div></header>
+<main>
+
+<section id="home" class="on">
+  <div class="hero"><h1>Find a spot. Pay for it. Park with no guesswork.</h1><p>ParkEase shows every slot in the lot in real time. Pick one, pay the fee, and it's yours right away with a ticket code. If the lot is full, join the waiting list and you get first pick.</p>
+  <div class="row" id="heroBtns"></div></div>
+  <div class="stats" id="stats"></div>
+  <div class="card steps">
+    <h3 style="margin:0 0 12px">How it works</h3>
+    <ol>
+      <li><b>Pick a slot.</b> Tap a green slot and choose how many hours you need.</li>
+      <li><b>Pay the fee.</b> Pay with GCash or card.</li>
+      <li><b>Slot is Occupied.</b> It's yours the moment you pay.</li>
+      <li><b>Keep your ticket code.</b> It looks like <code>PE-7K3Q9X</code> and is saved in My Account.</li>
+    </ol>
+  </div>
+</section>
+
+<section id="auth">
+  <div class="card" style="max-width:440px;margin:auto">
+    <h2>Welcome to ParkEase</h2><p class="sub">Log in or create an account to take a parking slot.</p>
+    <div class="tabs" id="tabs"><button data-t="login" class="on" onclick="authTab('login')">Log in</button><button data-t="signup" onclick="authTab('signup')">Sign up</button></div>
+    <div class="form" id="fLogin">
+      <label for="liUser">Username</label><input id="liUser" placeholder="Your username" autocomplete="username" maxlength="20">
+      <label for="liPass">Password</label><input id="liPass" type="password" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+      <button class="btn" onclick="login()">Log in</button>
+      <p class="sub" style="margin:4px 0 0">No account yet? <button class="link" onclick="authTab('signup')">Sign up</button></p>
+    </div>
+    <div class="form" id="fSignup" style="display:none">
+      <label for="suName">Full name</label><input id="suName" placeholder="e.g. Juan Dela Cruz" autocomplete="name" maxlength="30">
+      <label for="suUser">Username</label><input id="suUser" placeholder="3–20 letters, numbers or _" autocomplete="username" maxlength="20">
+      <label for="suPass">Password</label><input id="suPass" type="password" placeholder="At least 4 characters" autocomplete="new-password">
+      <label for="suPass2">Confirm password</label><input id="suPass2" type="password" placeholder="Type the password again" autocomplete="new-password" onkeydown="if(event.key==='Enter')signup()">
+      <button class="btn" onclick="signup()">Create account</button>
+      <p class="sub" style="margin:4px 0 0">Already have an account? <button class="link" onclick="authTab('login')">Log in</button></p>
+    </div>
+  </div>
+</section>
+
+<section id="slots">
+  <h2>Parking Slots</h2><p class="sub">Tap a green slot and pay the fee. It becomes Occupied as soon as you pay. One slot per person.</p>
+  <div id="slotNote"></div>
+  <div class="card">
+    <div class="row"><div class="legend"><span><i class="dot" style="background:var(--ok)"></i>Available</span><span><i class="dot" style="background:var(--bad)"></i>Occupied</span></div></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<section id="mine">
+  <h2>My Account</h2><p class="sub">Your profile, ticket code and parking status.</p>
+  <div class="card" id="mineOut"></div>
+</section>
+
+<section id="wait">
+  <h2>Waiting List</h2><p class="sub">First come, first served. You can join when no free slot is left for you. When a slot opens, the first person in line gets to take it.</p>
+  <div class="card"><div id="waitNote"></div><div class="row"><button class="btn o" id="joinBtn" onclick="joinQueue()">Join waiting list</button></div>
+  <div id="waitOut"></div></div>
+</section>
+
+<p class="foot"><a href="admin/">Staff login</a></p>
+</main>
+
+<dialog id="resDlg"><div class="dlg"><h3 id="rdTitle" style="margin-top:0"></h3><div id="rdBody"></div></div></dialog>
+<dialog id="tkDlg"><div class="dlg"><div id="tkBody"></div><div class="row noprint" style="margin:14px 0 0"><button class="btn l sm" onclick="closeDlg('tkDlg')">Close</button></div></div></dialog>
+<div id="toast"></div>
+
+<script src="common.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
